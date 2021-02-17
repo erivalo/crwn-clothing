@@ -10,7 +10,7 @@ import {
 
 import "./checkout.styles.scss";
 
-const Checkout = ({ cartItems, cartTotal }) => (
+const Checkout = ({ cartItems, cartTotal, dispatch }) => (
   <div className="checkout-page">
     <div className="checkout-header">
       <div className="header-block">
