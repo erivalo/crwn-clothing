@@ -12,7 +12,7 @@ import SignInSignUpPage from "./pages/sing-in-and-sign-up/sign-in-and-sign-up.co
 import CheckoutPage from "./pages/checkout/checkout.component";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { setCurrentUser } from "./redux/user/user.actions";
-import { selectCurrentUser } from "./redux/user/user.selector";
+import { selectCurrentUser } from "./redux/user/user.selectors";
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -30,16 +30,17 @@ class App extends React.Component {
           });
         });
       }
+
       setCurrentUser(userAuth);
     });
   }
 
   componentWillUnmount() {
-    if (!this.unsubscribeFromAuth) return;
     this.unsubscribeFromAuth();
   }
 
   render() {
+    console.log("current props=> ", this.props);
     return (
       <div>
         <Header />
@@ -49,7 +50,7 @@ class App extends React.Component {
           <Route exact path="/checkout" component={CheckoutPage} />
           <Route
             exact
-            path="/sign"
+            path="/signin"
             render={() =>
               this.props.currentUser ? (
                 <Redirect to="/" />
