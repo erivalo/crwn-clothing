@@ -29,12 +29,12 @@ class SignUp extends React.Component {
     }
 
     const { signUpStart } = this.props;
-    const user = {
+    const userCredentials = {
       email,
       password,
       displayName,
     };
-    signUpStart(user);
+    signUpStart(userCredentials);
   };
 
   handleChange = (event) => {
@@ -101,7 +101,7 @@ class SignUp extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  signUpStart: (user) => dispatch(signUpStart(user)),
+  signUpStart: (userCredentials) => dispatch(signUpStart(userCredentials)),
 });
 
 export default connect(null, mapDispatchToProps)(SignUp);
