@@ -7,6 +7,7 @@ import {
   signInFailure,
   signOutFailure,
   signOutSuccess,
+  signUpFailure,
 } from "./user.actions";
 
 import {
@@ -15,7 +16,6 @@ import {
   createUserProfileDocument,
   getCurrentUser,
 } from "../../firebase/firebase.utils";
-import purgeStoredState from "redux-persist/es/purgeStoredState";
 
 function* getSnapshotFromUserAuth(userAuth) {
   try {
@@ -80,11 +80,28 @@ export function* onSignOutStart() {
   yield takeLatest(UserActionTypes.SIGN_OUT_START, signOut);
 }
 
+export function* signUp({ payload: { email, password, displayName } }) {
+  try {
+    const { user } = yield auth.createUserWithEmailAndPassword(email, password);
+    yield createUserProfileDocument(user, {
+      displayName,
+    });
+    yield signInWithEmail({ payload: { email, password } });
+  } catch (error) {
+    put(signUpFailure(error));
+  }
+}
+
+export function* onSignUpStart() {
+  yield takeLatest(UserActionTypes.SIGN_UP_START, signUp);
+}
+
 export function* userSagas() {
   yield all([
     call(onGoogleSignInStart),
     call(onEmailSignInStart),
     call(onCheckUserSession),
     call(onSignOutStart),
+    call(onSignUpStart),
   ]);
 }
